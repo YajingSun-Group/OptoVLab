@@ -7,10 +7,7 @@
 </p>
 
 <p align="center">
-  <a href="https://yajingsun-group.github.io/OptoVLab/">Online demo</a> ·
-  <a href="docs/ARCHITECTURE.md">Architecture</a> ·
-  <a href="docs/DEPLOYMENT.md">Deployment</a> ·
-  <a href="docs/DATA_AND_REPRODUCIBILITY.md">Data and reproducibility</a>
+  <a href="https://yajingsun-group.github.io/OptoVLab/">Online demo</a>
 </p>
 
 <div align="center">
@@ -86,7 +83,7 @@ Open:
 
 The bundled demo data are sufficient for browsing, deterministic analysis, and
 API/UI development. Real PDF extraction additionally requires the optional
-services and credentials listed in [Deployment](docs/DEPLOYMENT.md).
+services and credentials configured through the local environment.
 
 ## Verification
 
@@ -116,9 +113,8 @@ uv run python scripts/verify_public_site.py --base-url http://127.0.0.1:4173
 
 This code release does **not** redistribute publisher PDFs or the complete
 19,175-device research corpus. The small JSON files under `examples/data/` and
-`apps/database-web/public/data/` exist only to make the interfaces runnable.
-See [Data and Reproducibility](docs/DATA_AND_REPRODUCIBILITY.md) before using
-demo values for analysis.
+`apps/database-web/public/data/` exist only to make the interfaces runnable and
+must not be interpreted as the complete research dataset.
 
 ## Citation
 
