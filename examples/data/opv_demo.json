@@ -1,0 +1,40 @@
+[
+  {
+    "id": "demo-opv-001",
+    "doi": null,
+    "donor": "Demo donor A",
+    "acceptor": "Demo acceptor A",
+    "donor_smiles": null,
+    "acceptor_smiles": null,
+    "device_structure": "conventional",
+    "device_type": "conventional",
+    "pce": 15.2,
+    "voc": 0.86,
+    "jsc": 23.1,
+    "ff": 76.4,
+    "publish_year": 2024,
+    "primary_layer": "demo_record",
+    "strict_performance_benchmark": false,
+    "strict_molecular_benchmark": false,
+    "has_both_smiles": false
+  },
+  {
+    "id": "demo-opv-002",
+    "doi": null,
+    "donor": "Demo donor B",
+    "acceptor": "Demo acceptor B",
+    "donor_smiles": null,
+    "acceptor_smiles": null,
+    "device_structure": "inverted",
+    "device_type": "inverted",
+    "pce": 17.4,
+    "voc": 0.91,
+    "jsc": 24.8,
+    "ff": 77.1,
+    "publish_year": 2025,
+    "primary_layer": "demo_record",
+    "strict_performance_benchmark": false,
+    "strict_molecular_benchmark": false,
+    "has_both_smiles": false
+  }
+]

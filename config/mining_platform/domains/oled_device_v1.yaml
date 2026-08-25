@@ -1,0 +1,1365 @@
+template_id: oled_device_v1
+domain: oled
+template_name: OLED Device Mining Template
+version: v1
+status: draft
+scope: organic_small_molecule_oled
+description: >
+  Template for mining organic small-molecule OLED device structures,
+  paper-local material entities, device stacks, performance metrics,
+  and evidence anchors from literature PDFs.
+
+paper_metadata_policy:
+  source: existing_papers_table
+  llm_should_extract: false
+  notes: >
+    DOI, title, journal, publisher, year, source_file, and PDF path are managed
+    by the existing paper library. The mining LLM should not spend tokens
+    extracting paper metadata unless a later consistency-check task explicitly
+    asks for it.
+
+scope_filter:
+  include:
+    - OLED with organic small-molecule emitter
+    - fluorescent OLED
+    - TADF OLED
+    - MR-TADF OLED
+    - hyperfluorescent OLED
+    - exciplex OLED if final emitter is organic small molecule
+  exclude:
+    - perovskite LED
+    - quantum-dot LED
+    - inorganic LED
+    - polymer-emitter OLED
+    - organometallic phosphorescent emitter OLED
+  special_case:
+    - polymer host with small-molecule emitter
+    - mixed host systems
+    - exciplex host or exciplex emitter systems
+    - white OLED
+    - tandem OLED
+
+review_policy:
+  evidence_required_default: true
+  allow_missing_optional_fields: true
+  preserve_raw_mentions: true
+  do_not_infer_missing_values: true
+  smiles_required_in_device_mining: false
+  first_phase_ml_target: small_molecule_final_emitter
+  raw_values_for_review: true
+  normalized_values_for_ml: true
+
+entities:
+  evidence:
+    path: evidence[]
+    label: Evidence anchors
+    description: Text/table/figure/caption locations supporting extracted values.
+  materials:
+    path: materials[]
+    label: Paper-local material entities
+    description: Materials and aliases resolved within one paper before global material linking.
+  devices:
+    path: devices[]
+    label: OLED devices
+    description: One OLED device reported in a paper, table, figure, or device series.
+  layers:
+    path: devices[].layers[]
+    label: Device layers
+    description: Ordered layers in one OLED device stack.
+  components:
+    path: devices[].layers[].components[]
+    label: Layer components
+    description: Material components in one layer, referencing paper-local material IDs when possible.
+  performance:
+    path: devices[].performance[]
+    label: Device performance
+    description: Reported device performance metrics, raw values, normalized values, and test conditions.
+
+vocabularies:
+  layer_role:
+    - substrate
+    - anode
+    - HIL
+    - HTL
+    - EBL
+    - EML
+    - HBL
+    - ETL
+    - EIL
+    - cathode
+    - CPL
+    - CGL
+    - recombination_layer
+    - outcoupling_layer
+    - buffer_layer
+    - spacer_layer
+    - protective_layer
+    - interlayer
+    - encapsulation
+    - mixed_transport_layer
+    - other
+    - unknown
+
+  component_role:
+    - neat_material
+    - host
+    - co_host
+    - host_donor
+    - host_acceptor
+    - dopant
+    - emitter
+    - final_emitter
+    - emitter_dopant
+    - sensitizer
+    - sensitizer_dopant
+    - assistant_dopant
+    - exciplex_donor
+    - exciplex_acceptor
+    - transport_material
+    - injection_material
+    - blocking_material
+    - p_dopant
+    - n_dopant
+    - charge_generation_material
+    - electrode_material
+    - optical_capping_material
+    - additive
+    - unknown
+
+  emission_mechanism:
+    - fluorescence
+    - phosphorescence
+    - TADF
+    - MR_TADF
+    - hyperfluorescence
+    - exciplex_emission
+    - RTP
+    - unknown
+
+  device_type:
+    - bottom_emission
+    - top_emission
+    - transparent
+    - tandem
+    - white_OLED
+    - unknown
+
+  control_or_target:
+    - control
+    - target
+    - optimized
+    - reference
+    - screening
+    - unknown
+
+  variable_factor:
+    - emitter_structure
+    - host_material
+    - sensitizer_material
+    - doping_concentration
+    - EML_thickness
+    - transport_layer_material
+    - device_architecture
+    - processing_method
+    - unknown
+
+  fabrication_method:
+    - vacuum_deposition
+    - thermal_evaporation
+    - solution_process
+    - spin_coating
+    - inkjet_printing
+    - blade_coating
+    - hybrid_process
+    - unknown
+
+  encapsulation_status:
+    - encapsulated
+    - unencapsulated
+    - not_reported
+    - unknown
+
+  driving_mode:
+    - constant_current
+    - constant_voltage
+    - constant_luminance
+    - pulsed
+    - unknown
+
+  atmosphere:
+    - air
+    - nitrogen
+    - vacuum
+    - glovebox
+    - unknown
+
+  material_class:
+    - small_molecule_organic
+    - organoboron_organic
+    - organometallic_complex
+    - polymer
+    - salt
+    - mixture
+    - inorganic
+    - unknown
+    - proprietary
+    - non_material_reference
+
+  structure_source:
+    - text
+    - table
+    - figure
+    - scheme
+    - database
+    - manual
+    - unknown
+
+  metric_family:
+    - EQE
+    - CE
+    - PE
+    - luminance
+    - voltage
+    - current_density
+    - color
+    - spectrum
+    - lifetime
+    - rolloff
+    - radiometric
+    - unknown
+
+  metric_statistic:
+    - max
+    - at_luminance
+    - at_current_density
+    - at_voltage
+    - rolloff
+    - LT50
+    - LT80
+    - LT90
+    - LT95
+    - CIE_1931
+    - measured
+    - unknown
+
+  evidence_source_type:
+    - text
+    - table
+    - figure
+    - caption
+    - scheme
+    - supplementary
+    - image_crop
+    - unknown
+
+ui:
+  device_group_order:
+    - device_identity
+    - final_emitter
+    - device_stack
+    - layer_components
+    - fabrication
+    - performance
+    - scope_and_notes
+  default_review_entity: devices
+  show_evidence_panel: true
+  field_table_grouping: device
+
+llm_output_schema:
+  root: object
+  required_keys:
+    - evidence
+    - materials
+    - devices
+  excluded_keys:
+    - paper
+  json_shape:
+    evidence:
+      - evidence_id: string
+        source_type: string
+        source_location: string | null
+        source_text: string | null
+        page_id: integer | null
+        block_id: string | null
+        bbox: list[number]
+    materials:
+      - paper_material_id: string
+        global_material_id: string | null
+        mention_list: list[string]
+        full_name_in_paper: string | null
+        normalized_name: string | null
+        canonical_name: string | null
+        abbreviation: string | null
+        paper_specific_label: string | null
+        material_class: string | null
+        smiles: string | null
+        inchi: string | null
+        inchi_key: string | null
+        structure_source: string | null
+        structure_confidence: number | null
+        evidence_refs: list[string]
+    devices:
+      - device_label: string | null
+        device_series_id: string | null
+        control_or_target: string | null
+        variable_factor: list[string]
+        device_type: string | null
+        emission_mechanism: list[string]
+        architecture_text: string | null
+        final_emitter: object | null
+        fabrication: object | null
+        layers: list[object]
+        performance: list[object]
+        evidence_refs: list[string]
+
+fields:
+  - field_path: evidence[].evidence_id
+    label: Evidence ID
+    data_type: string
+    required: true
+    entity: evidence
+    review_priority: high
+
+  - field_path: evidence[].source_type
+    label: Evidence source type
+    data_type: enum
+    enum_ref: evidence_source_type
+    required: true
+    entity: evidence
+    review_priority: high
+
+  - field_path: evidence[].source_location
+    label: Evidence source location
+    data_type: string
+    required: false
+    entity: evidence
+    review_priority: medium
+    extraction_hint: Preserve labels such as Table 1, Figure 3b, Scheme 1, or Supplementary Table S2.
+
+  - field_path: evidence[].source_text
+    label: Evidence source text
+    data_type: string
+    required: false
+    entity: evidence
+    review_priority: high
+
+  - field_path: evidence[].page_id
+    label: Evidence page
+    data_type: integer
+    required: false
+    entity: evidence
+    review_priority: medium
+
+  - field_path: evidence[].block_id
+    label: Evidence block ID
+    data_type: string
+    required: false
+    entity: evidence
+    review_priority: medium
+
+  - field_path: evidence[].bbox
+    label: Evidence bounding box
+    data_type: list_number
+    required: false
+    entity: evidence
+    review_priority: low
+
+  - field_path: materials[].paper_material_id
+    label: Paper material ID
+    data_type: string
+    required: true
+    entity: material
+    review_priority: high
+    extraction_hint: Assign stable IDs within the paper, such as M001, M002, M003.
+
+  - field_path: materials[].global_material_id
+    label: Global material ID
+    data_type: string
+    required: false
+    entity: material
+    review_priority: low
+    extraction_hint: Reserved for later cross-paper material resolver; leave null in device mining.
+
+  - field_path: materials[].mention_list
+    label: Material mentions
+    data_type: list_string
+    required: true
+    entity: material
+    evidence_required: true
+    review_priority: high
+    extraction_hint: All names, abbreviations, and paper-specific labels that refer to the same material.
+
+  - field_path: materials[].full_name_in_paper
+    label: Full name in paper
+    data_type: string
+    required: false
+    entity: material
+    evidence_required: true
+    review_priority: high
+    extraction_hint: Use only the full expanded material name explicitly written in the paper. Do not infer or complete a full name from external knowledge. Use null when the paper only provides an abbreviation, acronym, or paper-specific label.
+
+  - field_path: materials[].normalized_name
+    label: Normalized material name
+    data_type: string
+    required: false
+    entity: material
+    review_priority: medium
+
+  - field_path: materials[].canonical_name
+    label: Canonical material name
+    data_type: string
+    required: false
+    entity: material
+    review_priority: low
+
+  - field_path: materials[].abbreviation
+    label: Material abbreviation
+    data_type: string
+    required: false
+    entity: material
+    evidence_required: true
+    review_priority: high
+
+  - field_path: materials[].paper_specific_label
+    label: Paper-specific material label
+    data_type: string
+    required: false
+    entity: material
+    evidence_required: true
+    review_priority: high
+
+  - field_path: materials[].material_class
+    label: Material class
+    data_type: enum
+    enum_ref: material_class
+    required: false
+    entity: material
+    review_priority: high
+
+  - field_path: materials[].smiles
+    label: SMILES
+    data_type: string
+    required: false
+    entity: material
+    review_priority: low
+    extraction_hint: Reserved for material resolver; do not invent SMILES.
+
+  - field_path: materials[].inchi
+    label: InChI
+    data_type: string
+    required: false
+    entity: material
+    review_priority: low
+    extraction_hint: Reserved for material resolver.
+
+  - field_path: materials[].inchi_key
+    label: InChIKey
+    data_type: string
+    required: false
+    entity: material
+    review_priority: low
+    extraction_hint: Reserved for material resolver.
+
+  - field_path: materials[].structure_source
+    label: Structure source
+    data_type: enum
+    enum_ref: structure_source
+    required: false
+    entity: material
+    review_priority: medium
+
+  - field_path: materials[].structure_confidence
+    label: Structure confidence
+    data_type: number
+    required: false
+    entity: material
+    review_priority: medium
+    validation:
+      min: 0
+      max: 1
+
+  - field_path: materials[].evidence_refs
+    label: Material evidence references
+    data_type: list_string
+    required: false
+    entity: material
+    evidence_required: true
+    review_priority: high
+
+  - field_path: devices[].device_label
+    label: Device label
+    data_type: string
+    required: true
+    entity: device
+    evidence_required: true
+    ui_group: device_identity
+    review_priority: high
+
+  - field_path: devices[].device_series_id
+    label: Device series ID
+    data_type: string
+    required: false
+    entity: device
+    ui_group: device_identity
+    review_priority: medium
+
+  - field_path: devices[].control_or_target
+    label: Control or target device
+    data_type: enum
+    enum_ref: control_or_target
+    required: false
+    entity: device
+    ui_group: device_identity
+    review_priority: medium
+
+  - field_path: devices[].variable_factor
+    label: Variable factor
+    data_type: list_enum
+    enum_ref: variable_factor
+    required: false
+    entity: device
+    ui_group: device_identity
+    review_priority: medium
+
+  - field_path: devices[].device_type
+    label: Device type
+    data_type: enum
+    enum_ref: device_type
+    required: false
+    entity: device
+    evidence_required: true
+    ui_group: device_identity
+    review_priority: medium
+
+  - field_path: devices[].emission_mechanism
+    label: Device emission mechanism
+    data_type: list_enum
+    enum_ref: emission_mechanism
+    required: false
+    entity: device
+    evidence_required: true
+    ui_group: device_identity
+    review_priority: high
+
+  - field_path: devices[].architecture_text
+    label: Architecture text
+    data_type: string
+    required: false
+    entity: device
+    evidence_required: true
+    ui_group: device_stack
+    review_priority: high
+    extraction_hint: Original stack string. The extracted layers should fully correspond to this stack when available.
+
+  - field_path: devices[].final_emitter.paper_material_id
+    label: Final emitter material ID
+    data_type: string
+    required: false
+    entity: device
+    evidence_required: true
+    ui_group: final_emitter
+    review_priority: high
+
+  - field_path: devices[].final_emitter.mention
+    label: Final emitter mention
+    data_type: string
+    required: false
+    entity: device
+    evidence_required: true
+    ui_group: final_emitter
+    review_priority: high
+
+  - field_path: devices[].final_emitter.material_class
+    label: Final emitter material class
+    data_type: enum
+    enum_ref: material_class
+    required: false
+    entity: device
+    ui_group: final_emitter
+    review_priority: high
+
+  - field_path: devices[].final_emitter.emission_mechanism
+    label: Final emitter emission mechanism
+    data_type: enum
+    enum_ref: emission_mechanism
+    required: false
+    entity: device
+    evidence_required: true
+    ui_group: final_emitter
+    review_priority: high
+
+  - field_path: devices[].final_emitter.concentration.value
+    label: Final emitter concentration value
+    data_type: number
+    required: false
+    entity: device
+    evidence_required: true
+    ui_group: final_emitter
+    review_priority: medium
+
+  - field_path: devices[].final_emitter.concentration.unit
+    label: Final emitter concentration unit
+    data_type: string
+    required: false
+    entity: device
+    evidence_required: true
+    ui_group: final_emitter
+    review_priority: medium
+
+  - field_path: devices[].fabrication.method
+    label: Fabrication method
+    data_type: enum
+    enum_ref: fabrication_method
+    required: false
+    entity: device
+    evidence_required: true
+    ui_group: fabrication
+    review_priority: medium
+
+  - field_path: devices[].fabrication.device_area.value
+    label: Device area value
+    data_type: number
+    required: false
+    entity: device
+    evidence_required: true
+    ui_group: fabrication
+    review_priority: low
+
+  - field_path: devices[].fabrication.device_area.unit
+    label: Device area unit
+    data_type: string
+    required: false
+    entity: device
+    evidence_required: true
+    ui_group: fabrication
+    review_priority: low
+
+  - field_path: devices[].fabrication.encapsulation
+    label: Encapsulation
+    data_type: enum
+    enum_ref: encapsulation_status
+    required: false
+    entity: device
+    evidence_required: true
+    ui_group: fabrication
+    review_priority: low
+
+  - field_path: devices[].eml_count
+    label: EML count
+    data_type: integer
+    required: false
+    entity: device
+    ui_group: scope_and_notes
+    review_priority: medium
+
+  - field_path: devices[].is_tandem
+    label: Tandem OLED
+    data_type: boolean
+    required: false
+    entity: device
+    ui_group: scope_and_notes
+    review_priority: medium
+
+  - field_path: devices[].is_white_oled
+    label: White OLED
+    data_type: boolean
+    required: false
+    entity: device
+    ui_group: scope_and_notes
+    review_priority: medium
+
+  - field_path: devices[].emission_color
+    label: Emission color
+    data_type: string
+    required: false
+    entity: device
+    evidence_required: true
+    ui_group: scope_and_notes
+    review_priority: medium
+
+  - field_path: devices[].evidence_refs
+    label: Device evidence references
+    data_type: list_string
+    required: false
+    entity: device
+    evidence_required: true
+    ui_group: scope_and_notes
+    review_priority: high
+
+  - field_path: devices[].layers[].layer_index
+    label: Layer index
+    data_type: integer
+    required: true
+    entity: layer
+    ui_group: device_stack
+    review_priority: high
+    validation:
+      min: 1
+      max: 100
+
+  - field_path: devices[].layers[].layer_role
+    label: Layer role
+    data_type: enum
+    enum_ref: layer_role
+    required: true
+    entity: layer
+    evidence_required: true
+    ui_group: device_stack
+    review_priority: high
+    extraction_hint: Do not encode p-doped or n-doped status in layer_role; store dopant materials as components.
+
+  - field_path: devices[].layers[].layer_name
+    label: Layer name
+    data_type: string
+    required: false
+    entity: layer
+    evidence_required: true
+    ui_group: device_stack
+    review_priority: medium
+
+  - field_path: devices[].layers[].thickness.value
+    label: Layer thickness value
+    data_type: number
+    unit: nm
+    required: false
+    entity: layer
+    evidence_required: true
+    ui_group: device_stack
+    review_priority: high
+    validation:
+      min: 0
+      max: 1000
+
+  - field_path: devices[].layers[].thickness.unit
+    label: Layer thickness unit
+    data_type: string
+    required: false
+    entity: layer
+    evidence_required: true
+    ui_group: device_stack
+    review_priority: medium
+
+  - field_path: devices[].layers[].fabrication_method
+    label: Layer fabrication method
+    data_type: enum
+    enum_ref: fabrication_method
+    required: false
+    entity: layer
+    evidence_required: true
+    ui_group: fabrication
+    review_priority: low
+    extraction_hint: Use only when this layer has an explicitly reported or layer-specific preparation method. Do not mechanically repeat the device-level fabrication.method for every layer.
+
+  - field_path: devices[].layers[].deposition_rate.value
+    label: Deposition rate value
+    data_type: number
+    required: false
+    entity: layer
+    evidence_required: true
+    ui_group: fabrication
+    review_priority: low
+
+  - field_path: devices[].layers[].deposition_rate.unit
+    label: Deposition rate unit
+    data_type: string
+    required: false
+    entity: layer
+    evidence_required: true
+    ui_group: fabrication
+    review_priority: low
+
+  - field_path: devices[].layers[].solvent
+    label: Layer solvent
+    data_type: string
+    required: false
+    entity: layer
+    evidence_required: true
+    ui_group: fabrication
+    review_priority: low
+
+  - field_path: devices[].layers[].evidence_refs
+    label: Layer evidence references
+    data_type: list_string
+    required: false
+    entity: layer
+    evidence_required: true
+    ui_group: device_stack
+    review_priority: high
+
+  - field_path: devices[].layers[].components[].paper_material_id
+    label: Component material ID
+    data_type: string
+    required: false
+    entity: component
+    evidence_required: true
+    ui_group: layer_components
+    review_priority: high
+
+  - field_path: devices[].layers[].components[].material_mention
+    label: Component material mention
+    data_type: string
+    required: true
+    entity: component
+    evidence_required: true
+    ui_group: layer_components
+    review_priority: high
+
+  - field_path: devices[].layers[].components[].component_role
+    label: Component role
+    data_type: enum
+    enum_ref: component_role
+    required: false
+    entity: component
+    evidence_required: true
+    ui_group: layer_components
+    review_priority: high
+
+  - field_path: devices[].layers[].components[].ratio.raw
+    label: Component ratio raw
+    data_type: string
+    required: false
+    entity: component
+    evidence_required: true
+    ui_group: layer_components
+    review_priority: high
+
+  - field_path: devices[].layers[].components[].ratio.value
+    label: Component ratio value
+    data_type: number
+    required: false
+    entity: component
+    evidence_required: true
+    ui_group: layer_components
+    review_priority: medium
+
+  - field_path: devices[].layers[].components[].ratio.unit
+    label: Component ratio unit
+    data_type: string
+    required: false
+    entity: component
+    evidence_required: true
+    ui_group: layer_components
+    review_priority: medium
+
+  - field_path: devices[].layers[].components[].evidence_refs
+    label: Component evidence references
+    data_type: list_string
+    required: false
+    entity: component
+    evidence_required: true
+    ui_group: layer_components
+    review_priority: high
+
+  - field_path: devices[].performance[].metric_family
+    label: Metric family
+    data_type: enum
+    enum_ref: metric_family
+    required: true
+    entity: performance
+    evidence_required: true
+    ui_group: performance
+    review_priority: high
+
+  - field_path: devices[].performance[].statistic
+    label: Metric statistic
+    data_type: enum
+    enum_ref: metric_statistic
+    required: true
+    entity: performance
+    evidence_required: true
+    ui_group: performance
+    review_priority: high
+
+  - field_path: devices[].performance[].metric_name
+    label: Derived metric name
+    data_type: string
+    required: false
+    entity: performance
+    evidence_required: false
+    ui_group: performance
+    review_priority: low
+    extraction_hint: Optional display label. Prefer metric_family + statistic as source of truth.
+
+  - field_path: devices[].performance[].raw_value
+    label: Raw performance value
+    data_type: string
+    required: false
+    entity: performance
+    evidence_required: true
+    ui_group: performance
+    review_priority: high
+
+  - field_path: devices[].performance[].raw_unit
+    label: Raw performance unit
+    data_type: string
+    required: false
+    entity: performance
+    evidence_required: true
+    ui_group: performance
+    review_priority: high
+
+  - field_path: devices[].performance[].normalized_value
+    label: Normalized performance value
+    data_type: number
+    required: false
+    entity: performance
+    evidence_required: false
+    ui_group: performance
+    review_priority: medium
+    extraction_hint: Prefer deterministic unit normalizer; LLM may leave null.
+
+  - field_path: devices[].performance[].normalized_unit
+    label: Normalized performance unit
+    data_type: string
+    required: false
+    entity: performance
+    evidence_required: false
+    ui_group: performance
+    review_priority: medium
+
+  - field_path: devices[].performance[].raw_text
+    label: Raw performance text
+    data_type: string
+    required: false
+    entity: performance
+    evidence_required: true
+    ui_group: performance
+    review_priority: high
+
+  - field_path: devices[].performance[].condition.luminance.value
+    label: Condition luminance value
+    data_type: number
+    unit: cd/m2
+    required: false
+    entity: performance
+    evidence_required: true
+    ui_group: performance
+    review_priority: high
+
+  - field_path: devices[].performance[].condition.luminance.unit
+    label: Condition luminance unit
+    data_type: string
+    required: false
+    entity: performance
+    evidence_required: true
+    ui_group: performance
+    review_priority: medium
+
+  - field_path: devices[].performance[].condition.current_density.value
+    label: Condition current density value
+    data_type: number
+    unit: mA/cm2
+    required: false
+    entity: performance
+    evidence_required: true
+    ui_group: performance
+    review_priority: medium
+
+  - field_path: devices[].performance[].condition.current_density.unit
+    label: Condition current density unit
+    data_type: string
+    required: false
+    entity: performance
+    evidence_required: true
+    ui_group: performance
+    review_priority: medium
+
+  - field_path: devices[].performance[].condition.initial_luminance.value
+    label: Initial luminance value
+    data_type: number
+    unit: cd/m2
+    required: false
+    entity: performance
+    evidence_required: true
+    ui_group: performance
+    review_priority: high
+
+  - field_path: devices[].performance[].condition.initial_luminance.unit
+    label: Initial luminance unit
+    data_type: string
+    required: false
+    entity: performance
+    evidence_required: true
+    ui_group: performance
+    review_priority: medium
+
+  - field_path: devices[].performance[].condition.driving_mode
+    label: Lifetime driving mode
+    data_type: enum
+    enum_ref: driving_mode
+    required: false
+    entity: performance
+    evidence_required: true
+    ui_group: performance
+    review_priority: medium
+
+  - field_path: devices[].performance[].condition.atmosphere
+    label: Lifetime test atmosphere
+    data_type: enum
+    enum_ref: atmosphere
+    required: false
+    entity: performance
+    evidence_required: true
+    ui_group: performance
+    review_priority: low
+
+  - field_path: devices[].performance[].condition.temperature.value
+    label: Test temperature value
+    data_type: number
+    unit: C
+    required: false
+    entity: performance
+    evidence_required: true
+    ui_group: performance
+    review_priority: low
+
+  - field_path: devices[].performance[].condition.temperature.unit
+    label: Test temperature unit
+    data_type: string
+    required: false
+    entity: performance
+    evidence_required: true
+    ui_group: performance
+    review_priority: low
+
+  - field_path: devices[].performance[].reference.metric_family
+    label: Reference metric family
+    data_type: enum
+    enum_ref: metric_family
+    required: false
+    entity: performance
+    evidence_required: true
+    ui_group: performance
+    review_priority: medium
+
+  - field_path: devices[].performance[].reference.statistic
+    label: Reference statistic
+    data_type: enum
+    enum_ref: metric_statistic
+    required: false
+    entity: performance
+    evidence_required: true
+    ui_group: performance
+    review_priority: medium
+
+  - field_path: devices[].performance[].reference.value
+    label: Reference value
+    data_type: number
+    required: false
+    entity: performance
+    evidence_required: true
+    ui_group: performance
+    review_priority: medium
+
+  - field_path: devices[].performance[].reference.unit
+    label: Reference unit
+    data_type: string
+    required: false
+    entity: performance
+    evidence_required: true
+    ui_group: performance
+    review_priority: medium
+
+  - field_path: devices[].performance[].note
+    label: Performance note
+    data_type: string
+    required: false
+    entity: performance
+    evidence_required: true
+    ui_group: performance
+    review_priority: low
+
+  - field_path: devices[].performance[].evidence_refs
+    label: Performance evidence references
+    data_type: list_string
+    required: false
+    entity: performance
+    evidence_required: true
+    ui_group: performance
+    review_priority: high
+
+current_version_scope:
+  included_now:
+    - paper-local material entities via materials[]
+    - paper_material_id links from device components to materials
+    - device-level final_emitter summary
+    - raw and normalized performance value fields
+    - lifetime conditions
+    - roll-off reference metrics
+    - evidence_refs for materials, devices, layers, components, and performance
+    - fabrication fields as optional metadata
+    - device series and variable-factor fields as optional metadata
+  intentionally_deferred:
+    - LLM extraction of paper metadata
+    - automatic global_material_id generation
+    - mandatory SMILES or InChIKey extraction
+    - uncertainty, error bars, and sample counts
+    - data_quality_score
+    - multi-agent provenance fields such as text_agent/table_agent/vision_agent
+    - full bbox/table-row/figure-panel provenance beyond available parser output
+
+example_output:
+  evidence:
+    - evidence_id: E1
+      source_type: table
+      source_location: Table 1
+      source_text: "D1: ITO/HATCN/TAPC/mCBP:3 wt% BN-1/TPBi/LiF/Al; EQEmax = 31.2%."
+      page_id: 5
+      block_id: table_1
+      bbox: []
+    - evidence_id: E2
+      source_type: text
+      source_location: Main text
+      source_text: "An EQE of 26.5% was maintained at 1000 cd m-2."
+      page_id: 6
+      block_id: p6_b14
+      bbox: []
+    - evidence_id: E3
+      source_type: text
+      source_location: Main text
+      source_text: "The LT50 of D1 was 120 h at an initial luminance of 1000 cd m-2 under constant-current driving."
+      page_id: 7
+      block_id: p7_b8
+      bbox: []
+
+  materials:
+    - paper_material_id: M001
+      global_material_id: null
+      mention_list:
+        - BN-1
+        - compound 1
+        - emitter A
+      full_name_in_paper: null
+      normalized_name: BN-1
+      canonical_name: null
+      abbreviation: BN-1
+      paper_specific_label: compound 1
+      material_class: organoboron_organic
+      smiles: null
+      inchi: null
+      inchi_key: null
+      structure_source: figure
+      structure_confidence: null
+      evidence_refs:
+        - E1
+    - paper_material_id: M002
+      global_material_id: null
+      mention_list:
+        - mCBP
+      full_name_in_paper: null
+      normalized_name: mCBP
+      canonical_name: null
+      abbreviation: mCBP
+      paper_specific_label: null
+      material_class: small_molecule_organic
+      smiles: null
+      inchi: null
+      inchi_key: null
+      structure_source: database
+      structure_confidence: null
+      evidence_refs:
+        - E1
+
+  devices:
+    - device_label: D1
+      device_series_id: S1
+      control_or_target: optimized
+      variable_factor:
+        - doping_concentration
+      device_type: bottom_emission
+      emission_mechanism:
+        - MR_TADF
+      architecture_text: "ITO/HATCN/TAPC/mCBP:3 wt% BN-1/TPBi/LiF/Al"
+      final_emitter:
+        paper_material_id: M001
+        mention: BN-1
+        material_class: organoboron_organic
+        emission_mechanism: MR_TADF
+        concentration:
+          value: 3
+          unit: wt%
+      fabrication:
+        method: vacuum_deposition
+        device_area:
+          value: 4
+          unit: mm2
+        encapsulation: unknown
+      eml_count: 1
+      is_tandem: false
+      is_white_oled: false
+      emission_color: red
+      layers:
+        - layer_index: 1
+          layer_role: anode
+          layer_name: ITO
+          thickness: null
+          fabrication_method: unknown
+          deposition_rate: null
+          solvent: null
+          components:
+            - paper_material_id: null
+              material_mention: ITO
+              component_role: electrode_material
+              ratio: null
+              evidence_refs:
+                - E1
+          evidence_refs:
+            - E1
+        - layer_index: 2
+          layer_role: HIL
+          layer_name: HATCN
+          thickness: null
+          fabrication_method: vacuum_deposition
+          deposition_rate: null
+          solvent: null
+          components:
+            - paper_material_id: null
+              material_mention: HATCN
+              component_role: injection_material
+              ratio: null
+              evidence_refs:
+                - E1
+          evidence_refs:
+            - E1
+        - layer_index: 3
+          layer_role: HTL
+          layer_name: TAPC
+          thickness: null
+          fabrication_method: vacuum_deposition
+          deposition_rate: null
+          solvent: null
+          components:
+            - paper_material_id: null
+              material_mention: TAPC
+              component_role: transport_material
+              ratio: null
+              evidence_refs:
+                - E1
+          evidence_refs:
+            - E1
+        - layer_index: 4
+          layer_role: EML
+          layer_name: emissive layer
+          thickness:
+            value: 20
+            unit: nm
+          fabrication_method: vacuum_deposition
+          deposition_rate: null
+          solvent: null
+          components:
+            - paper_material_id: M002
+              material_mention: mCBP
+              component_role: host
+              ratio: null
+              evidence_refs:
+                - E1
+            - paper_material_id: M001
+              material_mention: BN-1
+              component_role: final_emitter
+              ratio:
+                raw: 3 wt%
+                value: 3
+                unit: wt%
+              evidence_refs:
+                - E1
+          evidence_refs:
+            - E1
+        - layer_index: 5
+          layer_role: ETL
+          layer_name: TPBi
+          thickness: null
+          fabrication_method: vacuum_deposition
+          deposition_rate: null
+          solvent: null
+          components:
+            - paper_material_id: null
+              material_mention: TPBi
+              component_role: transport_material
+              ratio: null
+              evidence_refs:
+                - E1
+          evidence_refs:
+            - E1
+        - layer_index: 6
+          layer_role: EIL
+          layer_name: LiF
+          thickness: null
+          fabrication_method: vacuum_deposition
+          deposition_rate: null
+          solvent: null
+          components:
+            - paper_material_id: null
+              material_mention: LiF
+              component_role: injection_material
+              ratio: null
+              evidence_refs:
+                - E1
+          evidence_refs:
+            - E1
+        - layer_index: 7
+          layer_role: cathode
+          layer_name: Al
+          thickness: null
+          fabrication_method: vacuum_deposition
+          deposition_rate: null
+          solvent: null
+          components:
+            - paper_material_id: null
+              material_mention: Al
+              component_role: electrode_material
+              ratio: null
+              evidence_refs:
+                - E1
+          evidence_refs:
+            - E1
+      performance:
+        - metric_family: EQE
+          statistic: max
+          metric_name: EQE_max
+          raw_value: "31.2"
+          raw_unit: "%"
+          normalized_value: 31.2
+          normalized_unit: "%"
+          raw_text: "The maximum EQE of D1 was 31.2%."
+          condition: {}
+          reference: null
+          note: null
+          evidence_refs:
+            - E1
+        - metric_family: EQE
+          statistic: at_luminance
+          metric_name: EQE_at_luminance
+          raw_value: "26.5"
+          raw_unit: "%"
+          normalized_value: 26.5
+          normalized_unit: "%"
+          raw_text: "An EQE of 26.5% was maintained at 1000 cd m-2."
+          condition:
+            luminance:
+              value: 1000
+              unit: cd/m2
+          reference: null
+          note: null
+          evidence_refs:
+            - E2
+        - metric_family: lifetime
+          statistic: LT50
+          metric_name: LT50
+          raw_value: "120"
+          raw_unit: h
+          normalized_value: 120
+          normalized_unit: h
+          raw_text: "The LT50 of D1 was 120 h at an initial luminance of 1000 cd m-2 under constant-current driving."
+          condition:
+            initial_luminance:
+              value: 1000
+              unit: cd/m2
+            driving_mode: constant_current
+            atmosphere: unknown
+            temperature:
+              value: null
+              unit: C
+          reference: null
+          note: null
+          evidence_refs:
+            - E3

@@ -1,0 +1,38 @@
+{
+  "id": "example-4czipn-ppf",
+  "device": {
+    "primary_mechanism": "TADF",
+    "color_group": "green",
+    "fabrication_method": "vacuum_deposition",
+    "device_type": "bottom_emission"
+  },
+  "layers": [
+    {"layer_index": 0, "layer_role": "anode", "thickness_value": 100},
+    {"layer_index": 1, "layer_role": "HIL", "thickness_value": 30},
+    {"layer_index": 2, "layer_role": "EML", "thickness_value": 20},
+    {"layer_index": 3, "layer_role": "HBL", "thickness_value": 10},
+    {"layer_index": 4, "layer_role": "ETL", "thickness_value": 40},
+    {"layer_index": 5, "layer_role": "EIL", "thickness_value": 1},
+    {"layer_index": 6, "layer_role": "cathode", "thickness_value": 100}
+  ],
+  "components": [
+    {"layer_index": 0, "layer_role": "anode", "paper_material_id": "M001", "material_key": "ito", "component_role": "electrode_material"},
+    {"layer_index": 1, "layer_role": "HIL", "paper_material_id": "M002", "material_key": "pedotpss", "component_role": "injection_material"},
+    {"layer_index": 2, "layer_role": "EML", "paper_material_id": "M003", "material_key": "mcp", "component_role": "host", "ratio": {"value": 80, "unit": "wt%"}},
+    {"layer_index": 2, "layer_role": "EML", "paper_material_id": "M004", "material_key": "4czipn", "component_role": "final_emitter", "ratio": {"value": 20, "unit": "wt%"}},
+    {"layer_index": 3, "layer_role": "HBL", "paper_material_id": "M005", "material_key": "ppf", "component_role": "blocking_material"},
+    {"layer_index": 4, "layer_role": "ETL", "paper_material_id": "M006", "material_key": "tmpypb", "component_role": "transport_material"},
+    {"layer_index": 5, "layer_role": "EIL", "paper_material_id": "M007", "material_key": "lif", "component_role": "injection_material"},
+    {"layer_index": 6, "layer_role": "cathode", "paper_material_id": "M008", "material_key": "al", "component_role": "electrode_material"}
+  ],
+  "materials": [
+    {"paper_material_id": "M001", "abbreviation": "ITO", "material_key": "ito", "canonical_smiles": null},
+    {"paper_material_id": "M002", "abbreviation": "PEDOT:PSS", "material_key": "pedotpss", "canonical_smiles": null},
+    {"paper_material_id": "M003", "abbreviation": "mCP", "material_key": "mcp", "global_material_id": "d766843e30e840c19c2a6d06d0fa0854", "canonical_smiles": "c1cc(-n2c3ccccc3c3ccccc32)cc(-n2c3ccccc3c3ccccc32)c1"},
+    {"paper_material_id": "M004", "abbreviation": "4CzIPN", "material_key": "4czipn", "global_material_id": "c97b3c06204943dd88270a6538d9df98", "canonical_smiles": "C1=CC=C2C(=C1)C3=CC=CC=C3N2C4=C(C(=C(C(=C4C#N)N5C6=CC=CC=C6C7=CC=CC=C75)N8C9=CC=CC=C9C1=CC=CC=C18)N1C2=CC=CC=C2C2=CC=CC=C21)C#N"},
+    {"paper_material_id": "M005", "abbreviation": "PPF", "material_key": "ppf", "global_material_id": "fcdfecadaa3c43829b43c6953f0084f5", "canonical_smiles": null},
+    {"paper_material_id": "M006", "abbreviation": "TmPyPB", "material_key": "tmpypb", "global_material_id": "724a88f432e842d7adcdf3da7611934d", "canonical_smiles": null},
+    {"paper_material_id": "M007", "abbreviation": "LiF", "material_key": "lif", "canonical_smiles": null},
+    {"paper_material_id": "M008", "abbreviation": "Al", "material_key": "al", "canonical_smiles": null}
+  ]
+}

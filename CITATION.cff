@@ -1,0 +1,51 @@
+cff-version: 1.2.0
+message: "If you use OptoVLab, please cite this software and the accompanying manuscript."
+title: "OptoVLab: A Self-improving Agentic Virtual Laboratory for Organic Optoelectronic Research"
+type: software
+version: 0.1.0
+date-released: 2026-08-25
+url: "https://yajingsun-group.github.io/OptoVLab/"
+repository-code: "https://github.com/YajingSun-Group/OptoVLab"
+license: MIT
+authors:
+  - family-names: Zhang
+    given-names: Qian
+  - family-names: Hu
+    given-names: Yongxu
+  - family-names: Su
+    given-names: Zhiyao
+  - family-names: Miao
+    given-names: Jingsheng
+  - family-names: Guo
+    given-names: Xiaoyu
+  - family-names: Li
+    given-names: Nengquan
+  - family-names: Yang
+    given-names: Chuluo
+  - family-names: Sun
+    given-names: Yajing
+  - family-names: Hu
+    given-names: Wenping
+preferred-citation:
+  type: article
+  title: "A Self-improving Agentic Virtual Laboratory for Organic Optoelectronic Research"
+  authors:
+    - family-names: Zhang
+      given-names: Qian
+    - family-names: Hu
+      given-names: Yongxu
+    - family-names: Su
+      given-names: Zhiyao
+    - family-names: Miao
+      given-names: Jingsheng
+    - family-names: Guo
+      given-names: Xiaoyu
+    - family-names: Li
+      given-names: Nengquan
+    - family-names: Yang
+      given-names: Chuluo
+    - family-names: Sun
+      given-names: Yajing
+    - family-names: Hu
+      given-names: Wenping
+  year: 2026

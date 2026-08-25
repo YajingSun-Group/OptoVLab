@@ -1,0 +1,54 @@
+seed: 20260726
+
+input_dir: analysis/oled_device_discovery/outputs
+output_dir: analysis/oled_gat/outputs_hierarchical_v2
+
+scope:
+  eqe_min: 0.001
+  eqe_max: 60.0
+  require_all_eml_smiles: true
+  exclude_tandem: true
+  exclude_white: true
+  exclude_outcoupling_layers: true
+  outcoupling_roles:
+    - CPL
+    - outcoupling_layer
+
+split:
+  mode: device_random
+  folds: 10
+  test_fold: 0
+  validation_fold: 1
+  target_bins: 5
+
+graph:
+  maximum_atoms_per_molecule: 320
+  material_vocabulary_size: 4096
+  minimum_material_frequency: 1
+  molecular_fingerprint_size: 256
+
+model:
+  architecture: hierarchical_device_gat_v2
+  hidden_dim: 192
+  attention_heads: 6
+  atom_message_passing_layers: 3
+  device_message_passing_layers: 4
+  edge_dim: 32
+  dropout: 0.10
+  quantiles:
+    - 0.10
+    - 0.50
+    - 0.90
+
+training:
+  batch_size: 56
+  epochs: 320
+  learning_rate: 0.001
+  weight_decay: 0.00005
+  mean_mse_weight: 1.0
+  quantile_loss_weight: 0.0
+  use_sample_weights: false
+  early_stopping_patience: 32
+  gradient_clip_norm: 2.0
+  num_workers: 4
+  mixed_precision: true

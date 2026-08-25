@@ -1,0 +1,45 @@
+{
+  "schema_version": "1.0-demo",
+  "generated_at": "2026-08-25T00:00:00Z",
+  "datasets": [
+    {
+      "key": "oled",
+      "label": "Organic Light-Emitting Diodes",
+      "record_count": 4,
+      "paper_count": 2,
+      "file": "data/oled.json.gz",
+      "compressed_bytes": 687,
+      "sha256": "77b7b7aadc4e2ef87d94e5e0ce51742db03c822f70575145403fd0def074283b",
+      "source": "OptoVLab manuscript examples; demonstration subset only",
+      "source_url": null,
+      "license": null,
+      "quality_counts": {"demo_record": 4}
+    },
+    {
+      "key": "ofet",
+      "label": "Organic Field-Effect Transistors",
+      "record_count": 2,
+      "paper_count": 0,
+      "file": "data/ofet.json.gz",
+      "compressed_bytes": 368,
+      "sha256": "09d841be6de63862a2f352b5c25ff09631be5c2e2f93f21085ba8f1dabb39ba1",
+      "source": "Synthetic records for interface demonstration",
+      "source_url": null,
+      "license": null,
+      "quality_counts": {"demo_record": 2}
+    },
+    {
+      "key": "opv",
+      "label": "Organic Photovoltaics",
+      "record_count": 2,
+      "paper_count": 0,
+      "file": "data/opv.json.gz",
+      "compressed_bytes": 308,
+      "sha256": "c63222da67aedcc428c7acf96e5fff10d9b7d97ab3e08f7400d9917b493836bd",
+      "source": "Synthetic records for interface demonstration",
+      "source_url": null,
+      "license": null,
+      "quality_counts": {"demo_record": 2}
+    }
+  ]
+}

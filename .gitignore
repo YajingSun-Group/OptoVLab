@@ -1,0 +1,48 @@
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+dist/
+build/
+*.egg-info/
+
+# JavaScript
+node_modules/
+.next/
+out/
+apps/web/dist/
+*.tsbuildinfo
+
+# Runtime and local configuration
+.env
+.env.*
+!.env.example
+runtime/
+logs/
+*.log
+*.sqlite
+*.sqlite3
+*.db
+
+# Research inputs and generated model artifacts
+*.pdf
+*.docx
+*.xlsx
+*.parquet
+*.pt
+*.pth
+*.ckpt
+*.cbm
+analysis/oled_gat/outputs*/
+
+# Browser and editor state
+.DS_Store
+.idea/
+.vscode/
+playwright-report/
+test-results/

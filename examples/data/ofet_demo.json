@@ -1,0 +1,38 @@
+[
+  {
+    "id": "demo-ofet-001",
+    "doi": null,
+    "semiconductor": "Demonstration semiconductor A",
+    "smiles": null,
+    "fabrication_method": "Vacuum deposition",
+    "fabrication_category": "Vacuum Techniques",
+    "device_geometry": "BGTC",
+    "geometry_category": "BGTC",
+    "conduction_type": "p-type",
+    "conduction_category": "p-type",
+    "highest_mobility": 1.2,
+    "mobility": "1.2",
+    "dielectric_layer": "SiO2",
+    "test_atmosphere": "Nitrogen",
+    "journal": "Synthetic UI demonstration",
+    "year": 2024
+  },
+  {
+    "id": "demo-ofet-002",
+    "doi": null,
+    "semiconductor": "Demonstration semiconductor B",
+    "smiles": null,
+    "fabrication_method": "Solution processing",
+    "fabrication_category": "Solution Techniques",
+    "device_geometry": "TGBC",
+    "geometry_category": "TGBC",
+    "conduction_type": "n-type",
+    "conduction_category": "n-type",
+    "highest_mobility": 0.42,
+    "mobility": "0.42",
+    "dielectric_layer": "Polymer dielectric",
+    "test_atmosphere": "Glovebox",
+    "journal": "Synthetic UI demonstration",
+    "year": 2025
+  }
+]

@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#ffffff" />
+    <meta
+      name="description"
+      content="OptoVLab is a self-improving agentic virtual laboratory for organic optoelectronic research."
+    />
+    <meta property="og:title" content="OptoVLab" />
+    <meta
+      property="og:description"
+      content="Literature mining, device graph modeling, and human-reviewed experimental optimization in one auditable loop."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://yajingsun-group.github.io/OptoVLab/" />
+    <meta
+      property="og:image"
+      content="https://yajingsun-group.github.io/OptoVLab/assets/oled_gat.jpg"
+    />
+    <link rel="canonical" href="https://yajingsun-group.github.io/OptoVLab/" />
+    <title>OptoVLab | Agentic Virtual Laboratory</title>
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="#demo" aria-label="OptoVLab home">
+        <img src="assets/optovlab_logo.svg" alt="OptoVLab" />
+      </a>
+      <nav aria-label="Primary navigation">
+        <a href="#demo">Demo</a>
+        <a href="#results">Results</a>
+        <a href="#architecture">Architecture</a>
+        <a class="github-link" href="https://github.com/YajingSun-Group/OptoVLab">GitHub</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="product-intro" id="demo">
+        <p class="kicker">Self-improving agentic virtual laboratory</p>
+        <h1>OptoVLab</h1>
+        <p class="subtitle">
+          Evidence-backed literature mining, device-level graph learning, and
+          human-reviewed experimental optimization for organic optoelectronics.
+        </p>
+        <div class="result-strip" aria-label="Manuscript results">
+          <div><strong>19,175</strong><span>structured OLED devices</span></div>
+          <div><strong>0.81</strong><span>OLED-GAT test R²</span></div>
+          <div><strong>2.56</strong><span>EQE MAE, percentage points</span></div>
+          <div><strong>+42%</strong><span>experimental EQE improvement</span></div>
+        </div>
+        <p class="result-note">Results reported in the current manuscript draft.</p>
+      </section>
+
+      <section class="research-console" aria-label="Interactive OptoVLab workflow demo">
+        <div class="console-heading">
+          <div>
+            <span class="live-dot" aria-hidden="true"></span>
+            <span>Interactive workflow</span>
+          </div>
+          <span class="demo-label">DEMONSTRATION RUN</span>
+        </div>
+
+        <div class="agent-tabs" role="tablist" aria-label="OptoVLab agents">
+          <button class="agent-tab active" role="tab" aria-selected="true" data-agent="mining">
+            <span class="tab-index">01</span>
+            <span><strong>Data Mining Agent</strong><small>PDF to evidence-backed records</small></span>
+          </button>
+          <button class="agent-tab" role="tab" aria-selected="false" data-agent="modeling">
+            <span class="tab-index">02</span>
+            <span><strong>Device Modeling Agent</strong><small>Directed device graphs and EQE</small></span>
+          </button>
+          <button class="agent-tab" role="tab" aria-selected="false" data-agent="experiment">
+            <span class="tab-index">03</span>
+            <span><strong>Experimental Design Agent</strong><small>Critic-reviewed closed loop</small></span>
+          </button>
+        </div>
+
+        <div class="console-grid">
+          <aside class="stage-list" aria-label="Agent pipeline stages">
+            <p class="section-label">Pipeline</p>
+            <div id="stage-list"></div>
+          </aside>
+
+          <article class="agent-workspace" aria-live="polite">
+            <header class="workspace-title">
+              <div>
+                <span id="agent-eyebrow">DATA MINING AGENT</span>
+                <h2 id="agent-title">Evidence-backed OLED extraction</h2>
+              </div>
+              <span id="agent-status" class="status-pill">Completed</span>
+            </header>
+
+            <div id="agent-visual" class="agent-visual"></div>
+
+            <div class="workspace-output">
+              <div>
+                <p class="section-label">Agent response</p>
+                <p id="agent-summary"></p>
+              </div>
+              <dl id="agent-metrics" class="agent-metrics"></dl>
+            </div>
+          </article>
+
+          <aside class="audit-panel">
+            <div class="audit-heading">
+              <div>
+                <p class="section-label">Audit trail</p>
+                <h2>Tool activity</h2>
+              </div>
+              <span id="tool-count">5 tools</span>
+            </div>
+            <ol id="tool-events" class="tool-events"></ol>
+            <div class="critic-note">
+              <strong>Scientific Critic</strong>
+              <p id="critic-text"></p>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="evidence-band" id="results">
+        <header class="section-heading">
+          <p class="kicker">Manuscript evidence</p>
+          <h2>From literature to testable device decisions</h2>
+          <p>
+            The public demo separates measured results from interface animation.
+            Open each figure to inspect the manuscript-scale evidence.
+          </p>
+        </header>
+        <div class="figure-grid">
+          <button class="figure-button" data-image="assets/data_mining.jpg" data-caption="Data mining workflow and corpus-level visualization">
+            <img src="assets/data_mining.jpg" alt="Data mining workflow and OLED corpus visualizations" />
+            <span><strong>Data Mining Agent</strong><small>Multimodal extraction and structured OLED corpus</small></span>
+          </button>
+          <button class="figure-button" data-image="assets/oled_gat.jpg" data-caption="OLED-GAT architecture, performance, and interpretability">
+            <img src="assets/oled_gat.jpg" alt="OLED-GAT model architecture and evaluation" />
+            <span><strong>Device Modeling Agent</strong><small>Directed graph representation and quantile prediction</small></span>
+          </button>
+        </div>
+      </section>
+
+      <section class="architecture-band" id="architecture">
+        <header class="section-heading">
+          <p class="kicker">System architecture</p>
+          <h2>One auditable research loop</h2>
+          <p>
+            Deterministic scientific tools remain separate from model reasoning.
+            Every result retains provenance, review state, and a path back to evidence.
+          </p>
+        </header>
+        <button class="overview-figure" data-image="assets/system_overview.svg" data-caption="OptoVLab multi-agent system overview">
+          <img src="assets/system_overview.svg" alt="OptoVLab multi-agent architecture" />
+          <span>Open full system overview</span>
+        </button>
+        <div class="principles">
+          <div><strong>Evidence first</strong><p>Extracted fields retain text, table, figure, and database provenance.</p></div>
+          <div><strong>Human governed</strong><p>Researchers approve plans, correct uncertain values, and control experimental actions.</p></div>
+          <div><strong>Closed loop</strong><p>Validated outcomes return to the corpus and update the next modeling cycle.</p></div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div>
+        <strong>OptoVLab</strong>
+        <span>Tianjin University · Shenzhen University</span>
+      </div>
+      <div>
+        <a href="https://github.com/YajingSun-Group/OptoVLab">Source code</a>
+        <span>MIT licensed code · Research prototype</span>
+      </div>
+    </footer>
+
+    <dialog id="figure-dialog" class="figure-dialog">
+      <div class="dialog-bar">
+        <span id="dialog-caption">Figure</span>
+        <button id="close-dialog" aria-label="Close figure" title="Close">×</button>
+      </div>
+      <img id="dialog-image" alt="Expanded scientific figure" />
+    </dialog>
+  </body>
+</html>

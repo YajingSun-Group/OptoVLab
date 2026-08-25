@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 126" role="img" aria-labelledby="title desc">
+  <title id="title">OptoVLab</title>
+  <desc id="desc">A multilayer OLED with a feedback orbit beside the OptoVLab wordmark.</desc>
+  <defs>
+    <linearGradient id="word" x1="0" x2="1">
+      <stop offset="0" stop-color="#F7F9FF"/>
+      <stop offset=".58" stop-color="#AEB9FF"/>
+      <stop offset="1" stop-color="#55E6D0"/>
+    </linearGradient>
+    <linearGradient id="screen" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0" stop-color="#5567E9"/>
+      <stop offset="1" stop-color="#42E2C2"/>
+    </linearGradient>
+    <filter id="glow" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="4" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <g transform="translate(10 7)">
+    <path d="M94 28a48 48 0 1 0 2 57" fill="none" stroke="#7C8CF8" stroke-width="5" stroke-linecap="round"/>
+    <path d="m93 18 18 13-21 8z" fill="#7C8CF8"/>
+    <rect x="27" y="42" width="65" height="46" rx="9" fill="#10182A" stroke="#AAB5FF" stroke-width="2"/>
+    <rect x="32" y="48" width="55" height="7" rx="3" fill="#6174F4"/>
+    <rect x="32" y="57" width="55" height="7" rx="3" fill="#2DD4BF"/>
+    <rect x="32" y="66" width="55" height="7" rx="3" fill="#88A5FF"/>
+    <rect x="32" y="75" width="55" height="7" rx="3" fill="url(#screen)"/>
+    <path d="M43 32 38 23m21 8V18m16 15 6-9" fill="none" stroke="#5CE6D1" stroke-width="3" stroke-linecap="round" filter="url(#glow)"/>
+    <circle cx="60" cy="65" r="52" fill="none" stroke="#2DD4BF" stroke-opacity=".15"/>
+  </g>
+  <text x="132" y="78" fill="url(#word)" font-family="Inter,Arial,sans-serif" font-size="64" font-weight="700" letter-spacing="-2">OptoVLab</text>
+  <text x="136" y="105" fill="#8FA0BD" font-family="Inter,Arial,sans-serif" font-size="14" font-weight="600" letter-spacing="3.2">SELF-IMPROVING VIRTUAL LAB</text>
+</svg>

@@ -1,0 +1,139 @@
+paths:
+  runtime_dir: ./runtime/mining_platform
+  sqlite_path: ./runtime/mining_platform/platform.sqlite
+  paper_registry_path: ./runtime/mining_platform/paper_registry.jsonl
+  parsed_dir: ./runtime/mining_platform/parsed
+  logs_dir: ./runtime/mining_platform/logs
+  mineru_runs_dir: ./runtime/mining_platform/mineru_runs
+  mining_runs_dir: ./runtime/mining_platform/mining_runs
+  inbox_pdfs_dir: ./runtime/mining_platform/inbox_pdfs
+  batch_reports_dir: ./runtime/mining_platform/batch_reports
+
+pdf_downloader:
+  manifest_path: ./runtime/pdf_downloader/download_manifest.json
+  sqlite_path: ./runtime/pdf_downloader/results.sqlite
+  papers_dir: ./runtime/pdf_downloader/papers
+
+server:
+  host: 127.0.0.1
+  port: 8000
+
+logging:
+  level: INFO
+
+batch_worker:
+  scan_interval_seconds: 30
+  stable_file_seconds: 5
+  max_retries: 2
+  default_domain: oled
+  run_metadata_enrichment: true
+  run_public_resolver: true
+  run_identity_judge: true
+  run_material_auto_decision: true
+  material_auto_accept_min_confidence: 0.9
+  material_auto_reject_min_confidence: 0.9
+  material_auto_accept_decimer_ocsr: false
+  run_visual_prep: false
+  run_material_ocsr: true
+  material_ocsr_auto_match_min_confidence: 0.8
+  material_public_concurrency: 16
+  material_judge_concurrency: 20
+  material_vlm_concurrency: 12
+  material_ocsr_paper_concurrency: 4
+  material_plan_concurrency: 1
+  material_visual_prefetch_concurrency: 10
+  material_decimer_segmentation_concurrency: 2
+  material_decimer_ocsr_concurrency: 4
+
+features:
+  # Current public/runtime version keeps material property extraction disabled for speed.
+  material_properties: false
+
+external_services:
+  mineru:
+    base_url: ${MINERU_BASE_URL:-http://127.0.0.1:18000}
+    backend: hybrid-auto-engine
+    parse_method: auto
+    lang_list: en
+    formula_enable: true
+    table_enable: true
+    return_md: true
+    return_content_list: true
+    return_middle_json: false
+    # Stage 1 stays lightweight. Stage 3 requests images on demand only for OCSR papers.
+    return_images: false
+    poll_interval_seconds: 2
+    timeout_seconds: 600
+  paper_metadata:
+    openalex_base_url: ${OPENALEX_BASE_URL:-https://api.openalex.org}
+    crossref_base_url: ${CROSSREF_BASE_URL:-https://api.crossref.org}
+    openalex_api_key: ${OPENALEX_API_KEY:-}
+    mailto: ${OPENALEX_MAILTO:-}
+    timeout_seconds: 20
+  pubchem:
+    base_url: https://pubchem.ncbi.nlm.nih.gov
+    timeout_seconds: 20
+    max_results_per_query: 3
+    max_synonyms: 20
+  anysearch:
+    api_key: ${ANYSEARCH_API_KEY}
+    base_url: ${ANYSEARCH_BASE_URL:-https://api.anysearch.com/v1/search}
+    timeout_seconds: 30
+    max_results_per_query: 5
+    max_query_variants_per_name: 3
+  opsin:
+    base_url: ${OPSIN_BASE_URL:-https://www.ebi.ac.uk/opsin/ws}
+    timeout_seconds: 30
+  decimer_segmentation:
+    base_url: ${DECIMER_SEGMENTATION_BASE_URL:-http://127.0.0.1:18100}
+    timeout_seconds: 120
+    max_segments: 20
+    expand: true
+  decimer_smiles:
+    base_url: ${DECIMER_SMI_BASE_URL:-http://127.0.0.1:18101}
+    timeout_seconds: 120
+    confidence: true
+    hand_drawn: false
+
+llm:
+  default_provider: deepseek
+  max_source_chars: 70000
+  vision_batch:
+    provider: qwen
+    completion_window: 24h
+    flush_seconds: 5
+    # Current VLM Batch jobs usually finish within seconds. A short polling interval
+    # avoids adding about 10 seconds of idle time to every small JSONL job.
+    poll_interval_seconds: 2
+    max_requests_per_job: 2000
+    # Leave headroom below the provider's 500 MB file and 6 MB line limits.
+    max_file_bytes: 350000000
+    max_line_bytes: 5800000
+    # DashScope permits far more concurrent Batch jobs; 32 keeps long OCSR runs moving
+    # while remaining well below the provider limit.
+    max_active_jobs: 32
+    image_max_dimension: 2048
+    image_jpeg_quality: 90
+    realtime_fallback: true
+  providers:
+    deepseek:
+      api_key: ${DEEPSEEK_API_KEY}
+      base_url: ${DEEPSEEK_BASE_URL:-https://api.deepseek.com}
+      default_model: ${DEEPSEEK_DEFAULT_MODEL:-deepseek-v4-flash}
+      thinking_mode: ${DEEPSEEK_THINKING_MODE:-enabled}
+      timeout_seconds: 300
+      request_max_attempts: 3
+      retry_backoff_seconds: 1
+      temperature: 0
+      response_format_json: true
+    qwen:
+      api_key: ${QWEN_API_KEY}
+      base_url: ${QWEN_BASE_URL:-https://dashscope.aliyuncs.com/compatible-mode/v1}
+      default_model: ${QWEN_DEFAULT_MODEL:-qwen3.6-plus}
+      vision_model: ${QWEN_VLM_MODEL:-qwen3.6-flash}
+      vision_enable_thinking: ${QWEN_VLM_ENABLE_THINKING:-false}
+      timeout_seconds: 120
+      request_max_attempts: 3
+      retry_backoff_seconds: 1
+      temperature: 0
+      response_format_json: true
