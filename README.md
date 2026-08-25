@@ -13,12 +13,13 @@
   <a href="docs/DATA_AND_REPRODUCIBILITY.md">Data and reproducibility</a>
 </p>
 
-<p align="center">
-  
+<div align="center">
+
 [![CI](https://github.com/YajingSun-Group/OptoVLab/actions/workflows/ci.yml/badge.svg)](https://github.com/YajingSun-Group/OptoVLab/actions/workflows/ci.yml)
 [![Pages](https://github.com/YajingSun-Group/OptoVLab/actions/workflows/pages.yml/badge.svg)](https://github.com/YajingSun-Group/OptoVLab/actions/workflows/pages.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-137f78.svg)](LICENSE)
-</p>
+
+</div>
 OptoVLab connects three specialist agents in an auditable research loop:
 
 - **Data Mining Agent:** turns scientific PDFs into device-grouped records with
