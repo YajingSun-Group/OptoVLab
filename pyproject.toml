@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "A self-improving agentic virtual laboratory for organic optoelectronic research"
 readme = "README.md"
 requires-python = ">=3.11,<3.14"
-license = "MIT"
+license = "LicenseRef-Academic-Noncommercial"
 authors = [
   { name = "Qian Zhang" },
   { name = "Yongxu Hu" },
@@ -26,7 +26,6 @@ keywords = [
 classifiers = [
   "Development Status :: 3 - Alpha",
   "Intended Audience :: Science/Research",
-  "License :: OSI Approved :: MIT License",
   "Programming Language :: Python :: 3.11",
 ]
 dependencies = [

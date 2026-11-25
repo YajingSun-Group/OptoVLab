@@ -14,7 +14,6 @@
 
 [![CI](https://github.com/YajingSun-Group/OptoVLab/actions/workflows/ci.yml/badge.svg)](https://github.com/YajingSun-Group/OptoVLab/actions/workflows/ci.yml)
 [![Pages](https://github.com/YajingSun-Group/OptoVLab/actions/workflows/pages.yml/badge.svg)](https://github.com/YajingSun-Group/OptoVLab/actions/workflows/pages.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-137f78.svg)](LICENSE)
 
 </div>
 OptoVLab connects three specialist agents in an auditable research loop:
@@ -130,6 +129,8 @@ private datasets; follow [`SECURITY.md`](SECURITY.md) instead.
 
 ## License
 
-Source code is released under the [MIT License](LICENSE). Third-party datasets
+Original code in this repository may be used, copied, and modified for non-commercial academic research, teaching, and reproducibility. Commercial use requires prior written permission from the copyright holder. Third-party materials remain subject to their own licenses. See [LICENSE](LICENSE).
+
+Third-party datasets
 and services retain their own terms; no third-party research dataset is bundled
 in this release.
